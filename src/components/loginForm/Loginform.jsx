@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/authSlice/authslice";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirecting
+import { Link, useNavigate } from "react-router-dom"; 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginForm = () => {
@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   // Redirect if user is already logged in
   useEffect(() => {

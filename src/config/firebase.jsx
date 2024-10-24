@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBjOk81BmuEk0HkEwEaOpz5qhz0SR4v6sc",
-  authDomain: "facebookclone-33e43.firebaseapp.com",
-  projectId: "facebookclone-33e43",
-  storageBucket: "facebookclone-33e43.appspot.com",
-  messagingSenderId: "319237967909",
-  appId: "1:319237967909:web:bb0f0af17e76d5537d6fcc",
-  measurementId: "G-J3DZJX8R7H"
+  apiKey:process.env.apiKey,
+  authDomain:process.env.apiKey,
+  projectId: process.env.apiKey,
+  storageBucket:process.env.apiKey,
+  messagingSenderId:process.env.apiKey,
+  appId: process.env.apiKey,
+  measurementId:process.env.apiKey,
 };
 
 const app = initializeApp(firebaseConfig);
