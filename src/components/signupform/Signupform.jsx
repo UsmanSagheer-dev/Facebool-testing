@@ -26,7 +26,7 @@ export const SignupForm = ({ toggleForm }) => {
         signupUser({ firstName, lastName, email, password })
       );
 
-  
+      alert("Signup Successful");
       setFirstName("");
       setLastName("");
       setEmail("");
