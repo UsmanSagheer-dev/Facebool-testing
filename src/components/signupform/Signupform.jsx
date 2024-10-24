@@ -21,10 +21,10 @@ export const SignupForm = ({ toggleForm }) => {
     }
 
     try {
+      console.log(firstName, lastName, email, password);
       await dispatch(
         signupUser({ firstName, lastName, email, password })
-      ).unwrap();
-      alert("Sign up successful!");
+      );
 
   
       setFirstName("");
@@ -33,7 +33,8 @@ export const SignupForm = ({ toggleForm }) => {
       setPassword("");
       setConfirmPassword("");
     } catch (error) {
-      alert(`Error signing up: ${error}`);
+      console.log(`Error signing up: ${error.message}`);
+    alert(`Error signing up: ${error.message}`);
     }
   };
 
