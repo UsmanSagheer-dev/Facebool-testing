@@ -2,9 +2,16 @@ import { Box } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
 import PostCard from "../../components/postCard/PostCard";
 import StoriesSlider from "../../components/storiesSlider/StoriesSlider";
-import CreatePost from "../../components/createpost/CreatePost";
-import { PostsPage } from "../../components/postpage/PostPage";
+import MenuList from "../../components/menuitem/Menuitem";
+import FacebookCard from "../../components/facebookcard/Facebookcard";
+
 export default function DashboardLayout() {
+  const styles={
+lineHeight:'10px',
+    fontSize:'35px',
+    fontFamily:'Helvetica',
+  }
+ 
   return (
     <Box sx={{ backgroundColor: '#d6dadb' }}>
       <Box>
@@ -31,12 +38,7 @@ export default function DashboardLayout() {
             },
           }}
         >
-          <p>👤 Profile</p>
-          <p>🏠 Home</p>
-          <p>📦 Marketplace</p>
-          <p>📺 Watch</p>
-          <p>🧑‍🤝‍🧑 Friends</p>
-          <p>🗓️ Events</p>
+          <MenuList/>
         </Box>
 
         {/* Main Content */}
@@ -90,10 +92,10 @@ export default function DashboardLayout() {
           >
             <StoriesSlider />
           </Box>
+          <Box>
+            <FacebookCard/>
+          </Box>
 
-          {/* <Box>
-        <PostsPage/>
-          </Box> */}
         </Box>
 
         {/* Right Sidebar */}
@@ -109,7 +111,7 @@ export default function DashboardLayout() {
             },
           }}
         >
-          <p>🎉 Events</p>
+          <p >🎉 Events</p>
           <p>📧 Messages</p>
           <p>🎂 Birthdays</p>
         </Box>

@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import { Box, Dialog, DialogContent, Typography, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Box, Dialog, DialogContent, Typography, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Divider } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,6 +15,7 @@ import GamesIcon from "@mui/icons-material/SportsEsports";
 import GridIcon from "@mui/icons-material/GridView";
 import BadgeVisibility from "../billicon/BadgeVisibility";
 import { Images } from "../../assets/images/images";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -42,9 +43,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   color: "gray",
-  "@media (max-width: 950px)": {
-    marginLeft: 0,
-  },
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -58,14 +56,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenSearch = () => {
+    setSearchOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseSearch = () => {
+    setSearchOpen(false);
+  };
+
+  const handleOpenProfileMenu = () => {
+    setProfileMenuOpen(true);
+  };
+
+  const handleCloseProfileMenu = () => {
+    setProfileMenuOpen(false);
   };
 
   const searchItems = [
@@ -74,7 +81,6 @@ export default function Navbar() {
     { name: "Muhammad Basit", newMessages: null },
     { name: "Pir Syed Ahmad Raza Shah Bukhari", newMessages: "9+ new" },
     { name: "Malik Munir Dinah", newMessages: null },
-    { name: "Muhammad Taqqi", newMessages: "5 new comments" },
     { name: "Muhammad Taqqi", newMessages: "5 new comments" },
   ];
 
@@ -108,7 +114,7 @@ export default function Navbar() {
             src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
             sx={{ width: 40, height: 40 }}
           />
-          <Search onClick={handleOpen}>
+          <Search onClick={handleOpenSearch}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -140,30 +146,27 @@ export default function Navbar() {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: { sm: "auto", md: "15px" } }}>
           {profileIcons.map((iconItem) => (
-            <IconButton key={iconItem.key} size="large" edge="end" color="inherit" sx={{backgroundColor:{sm:"none",md:'#c6c6c6'}}}>
+            <IconButton key={iconItem.key} size="large" edge="end" color="inherit" sx={{ backgroundColor: { sm: "none", md: '#c6c6c6' } }}>
               {iconItem.icon}
             </IconButton>
           ))}
-          <IconButton sx={{ p: 0, ml: 2,width:'25px' }}>
+          <IconButton onClick={handleOpenProfileMenu} sx={{ p: 0, ml: 2, width: '25px' }}>
             <Avatar alt="Profile Picture" src={Images.avatar} />
           </IconButton>
         </Box>
       </Toolbar>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            margin: "15px",
-            width: {sm:"auto",lg:"400px"},
-            borderRadius: "8px",
-          },
-        }}
-      >
+      {/* Search Dialog */}
+      <Dialog open={searchOpen} onClose={handleCloseSearch} PaperProps={{
+        style: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          margin: "15px",
+          width: "400px",
+          borderRadius: "8px",
+        },
+      }}>
         <DialogContent>
           <Typography variant="h6" gutterBottom>
             Search Facebook
@@ -184,10 +187,27 @@ export default function Navbar() {
                 <ListItemAvatar>
                   <Avatar>{item.name.charAt(0)}</Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={item.name} secondary={item.newMessages ? item.newMessages : null} />
+                <ListItemText primary={item.name} secondary={item.newMessages} />
               </ListItem>
             ))}
           </List>
+        </DialogContent>
+      </Dialog>
+
+      {/* Profile Menu Dialog */}
+      <Dialog open={profileMenuOpen} onClose={handleCloseProfileMenu} PaperProps={{
+        style: {
+          position: "absolute",
+          top: 30,
+          right: 15,
+          width: "200px",
+          borderRadius: "8px",
+        },
+      }}>
+        <DialogContent>
+          <MenuItem onClick={handleCloseProfileMenu}>Account</MenuItem>
+          <Divider/>
+          <MenuItem onClick={handleCloseProfileMenu}>Sign Out</MenuItem>
         </DialogContent>
       </Dialog>
     </AppBar>

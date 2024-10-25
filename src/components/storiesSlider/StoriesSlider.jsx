@@ -41,6 +41,7 @@ export default function StoriesSlider() {
         position: 'relative',
         width: '100%',
         maxWidth: '740px',
+        height:'200px',
         '&:hover .arrow-button': {
           opacity: 1,
         }
