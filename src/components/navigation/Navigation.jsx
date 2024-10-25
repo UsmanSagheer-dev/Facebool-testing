@@ -7,12 +7,9 @@ import { SignupForm } from '../signupform/Signupform';
 export default function Navigation() {
   return (
     <BrowserRouter>
-    
-
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
-
       </Routes>
     </BrowserRouter>
   );
