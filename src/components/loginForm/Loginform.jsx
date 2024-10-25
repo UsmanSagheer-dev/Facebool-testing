@@ -1,3 +1,4 @@
+// LoginForm.js
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -21,12 +22,12 @@ const LoginForm = () => {
 
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // Redirect if user is already logged in
   useEffect(() => {
     if (user) {
-      navigate("/"); // Redirect to dashboard/home after login
+      navigate("/dashboard"); // Redirect to dashboard after login
     }
   }, [user, navigate]);
 

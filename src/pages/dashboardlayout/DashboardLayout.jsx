@@ -91,10 +91,9 @@ export default function DashboardLayout() {
             <StoriesSlider />
           </Box>
 
-          <Box>
+          {/* <Box>
         <PostsPage/>
-
-          </Box>
+          </Box> */}
         </Box>
 
         {/* Right Sidebar */}
