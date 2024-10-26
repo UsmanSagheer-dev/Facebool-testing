@@ -33,7 +33,7 @@ export const SignupForm = ({ toggleForm }) => {
       setPassword("");
       setConfirmPassword("");
 
-      // Navigate to dashboard after signup
+ 
       navigate("/dashboard");
     } catch (error) {
       console.log(`Error signing up: ${error.message}`);
