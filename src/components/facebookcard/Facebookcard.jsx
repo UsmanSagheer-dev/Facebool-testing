@@ -5,7 +5,7 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-
+import { Images } from '../../assets/images/images';
 export default function FacebookCard() {
   const [likes, setLikes] = useState(0);
   const [comments, setComments] = useState([]);
@@ -35,7 +35,7 @@ export default function FacebookCard() {
   };
 
   return (
-    <Card sx={{ maxWidth: 500, margin: '20px auto', boxShadow: 3 }}>
+    <Card sx={{ maxWidth: 720, margin: '20px auto', boxShadow: 3 ,height:"auto"}}>
       <CardHeader
         avatar={
           <Avatar
@@ -48,12 +48,12 @@ export default function FacebookCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Sheraz Qaisrzai"
+        title="Usman Malik"
         subheader="18m"
       />
 
       <img
-        src="https://example.com/quran-image.jpg"
+        src={Images.usman}
         alt="Quran Page"
         style={{ width: '100%', height: 'auto' }}
       />
