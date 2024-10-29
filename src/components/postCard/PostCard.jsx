@@ -42,7 +42,7 @@ import { styles } from "./poststyle";
 export default function PostCard() {
   const dispatch = useDispatch();
   const posts = useSelector(selectPosts);
-  const user = useSelector(selectUser); 
+  const user = useSelector(selectUser); // Get the current user from the Redux store
   const [open, setOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -72,6 +72,7 @@ export default function PostCard() {
     setOpen(false);
     setFile(null);
     setFilePreview(null);
+    setDescription(""); // Clear the description when closing
   };
 
   const handleFileChange = (event) => {
@@ -108,11 +109,11 @@ export default function PostCard() {
     }
 
     const newPost = {
-      name: user.displayName || "Anonymous", 
+      name: user.displayName || "An", 
       description,
       filePreview: fileURL || filePreview || "",
       timestamp: new Date().toLocaleString(),
-      userId: user.uid,
+      userId: user.uid, // Store the ID of the user who created the post
     };
 
     try {
@@ -142,7 +143,7 @@ export default function PostCard() {
     if (postToDelete) {
       console.log("Deleting post with ID:", postToDelete.id);
       try {
-        await deleteDoc(doc(db, "posts", postToDelete.id)); 
+        await deleteDoc(doc(db, "posts", postToDelete.id));
         dispatch(setPosts(posts.filter((post) => post.id !== postToDelete.id)));
         console.log("Post deleted successfully");
       } catch (error) {
@@ -151,10 +152,9 @@ export default function PostCard() {
       handleCloseMenu();
     }
   };
-  
+
   return (
     <Box sx={styles.container}>
-     
       <Box sx={styles.inputSection}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
           <Avatar
@@ -249,7 +249,6 @@ export default function PostCard() {
         </DialogActions>
       </Dialog>
 
-
       <Box sx={styles.postContainer}>
         {posts.map((post) => (
           <Box key={post.id} sx={styles.postBox}>
@@ -288,51 +287,34 @@ export default function PostCard() {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: 'space-between',
-                  width: '100%',
+                  mr: 1,
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-                  <ThumbUpIcon sx={styles.actionIcons} />
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    sx={{ ml: 0.5 }}
-                  >
-                    Like
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-                  <CommentIcon sx={styles.actionIcons} />
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    sx={{ ml: 0.5 }}
-                  >
-                    Comment
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <ShareIcon sx={styles.actionIcons} />
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    sx={{ ml: 0.5 }}
-                  >
-                    Share
-                  </Typography>
-                </Box>
+                <ThumbUpIcon sx={styles.actionIcons} />
+                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
+                  12
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
+                <CommentIcon sx={styles.actionIcons} />
+                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
+                  3
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <ShareIcon sx={styles.actionIcons} />
+                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
+                  Share
+                </Typography>
               </Box>
             </Box>
           </Box>
         ))}
       </Box>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
+
+      {/* Menu for deleting posts */}
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+        <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
       </Menu>
     </Box>
   );
