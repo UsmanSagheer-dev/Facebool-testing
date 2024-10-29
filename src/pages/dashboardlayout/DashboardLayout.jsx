@@ -6,14 +6,14 @@ import MenuList from "../../components/menuitem/Menuitem";
 import FacebookCard from "../../components/facebookcard/Facebookcard";
 
 export default function DashboardLayout() {
-  const styles={
-lineHeight:'10px',
-    fontSize:'35px',
-    fontFamily:'Helvetica',
-  }
- 
+  const styles = {
+    lineHeight: "10px",
+    fontSize: "35px",
+    fontFamily: "Helvetica",
+  };
+
   return (
-    <Box sx={{ backgroundColor: '#d6dadb' }}>
+    <Box sx={{ backgroundColor: "#d6dadb" }}>
       <Box>
         <Navbar />
       </Box>
@@ -38,7 +38,7 @@ lineHeight:'10px',
             },
           }}
         >
-          <MenuList/>
+          <MenuList />
         </Box>
 
         {/* Main Content */}
@@ -70,6 +70,17 @@ lineHeight:'10px',
             },
           }}
         >
+           <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              overflow: "hidden",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <StoriesSlider />
+          </Box>
           <Box
             sx={{
               marginBottom: "20px",
@@ -80,22 +91,10 @@ lineHeight:'10px',
             <PostCard />
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              overflow: 'hidden',
-              width: "100%",
-              alignItems: "center",
-              position: 'relative',
-            }}
-          >
-            <StoriesSlider />
-          </Box>
+         
           <Box>
-            <FacebookCard/>
+            {/* <FacebookCard /> */}
           </Box>
-
         </Box>
 
         {/* Right Sidebar */}
@@ -111,7 +110,7 @@ lineHeight:'10px',
             },
           }}
         >
-          <p >🎉 Events</p>
+          <p>🎉 Events</p>
           <p>📧 Messages</p>
           <p>🎂 Birthdays</p>
         </Box>
