@@ -7,7 +7,7 @@ const labels = ["Profile", "Home", "Marketplace", "Watch", "Friends", "Events"];
 // Menu Item Component
 const MenuItem = ({ icon, label }) => {
   return (
-    <p style={{fontSize:"25px"}}>
+    <p style={{fontSize:"25px",fontWeight:'700'}}>
       {icon} {label}
     </p>
   );
