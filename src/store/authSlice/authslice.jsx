@@ -1,3 +1,4 @@
+// src/store/authSlice/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { Auth, db } from "../../config/firebase"; 
@@ -22,11 +23,6 @@ export const signupUser = createAsyncThunk(
     try {
       const userCredential = await createUserWithEmailAndPassword(Auth, email, password);
       const user = userCredential.user;
-
-      // Try logging user data before writing to Firestore
-      console.log("User created:", user.uid);
-
-      // Store user data in Firestore
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         firstName,
@@ -41,12 +37,11 @@ export const signupUser = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
-      console.error("Error signing up or saving data to Firestore:", error); // Log detailed error
+      console.error("Error signing up or saving data to Firestore:", error);
       return rejectWithValue(error.message);
     }
   }
 );
-
 
 const initialState = {
   user: null,
@@ -83,7 +78,6 @@ const authSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload; 
-        console.log("User signed up successfully:", action.payload);
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
@@ -91,6 +85,8 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const selectUser = (state) => state.auth.user;
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;

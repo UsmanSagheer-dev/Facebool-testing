@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser } from "../../store/authSlice/authslice";
-import { Container, CssBaseline, Box, Typography, Grid, TextField, Button } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  Box,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SignupForm = ({ toggleForm }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Add useNavigate
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,9 +30,7 @@ export const SignupForm = ({ toggleForm }) => {
     }
 
     try {
-      await dispatch(
-        signupUser({ firstName, lastName, email, password })
-      );
+      await dispatch(signupUser({ firstName, lastName, email, password }));
 
       alert("Signup Successful");
       setFirstName("");
@@ -33,7 +39,6 @@ export const SignupForm = ({ toggleForm }) => {
       setPassword("");
       setConfirmPassword("");
 
- 
       navigate("/dashboard");
     } catch (error) {
       console.log(`Error signing up: ${error.message}`);
