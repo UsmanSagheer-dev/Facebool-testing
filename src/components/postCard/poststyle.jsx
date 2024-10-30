@@ -30,7 +30,7 @@ export  const styles = {
 
       borderRadius: "8px",
       boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-      p: 2,
+   height:"100px"
     },
     postBox: {
       mb: 3,
@@ -50,7 +50,7 @@ export  const styles = {
       margin: "0 8px",
       cursor:'pointer',
     },
-    interactionSection:{
+    reactionSection:{
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
