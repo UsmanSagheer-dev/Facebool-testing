@@ -47,6 +47,7 @@ export default function PostCard() {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
+  const [fileType, setFileType] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [postToDelete, setPostToDelete] = useState(null);
 
@@ -72,13 +73,15 @@ export default function PostCard() {
     setOpen(false);
     setFile(null);
     setFilePreview(null);
-    setDescription(""); // Clear the description when closing
+    setDescription("");
+    setFileType("");
   };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
-    if (selectedFile && selectedFile.type.startsWith("image/")) {
+    if (selectedFile) {
+      setFileType(selectedFile.type || "");
       const reader = new FileReader();
       reader.onloadend = () => {
         setFilePreview(reader.result);
@@ -90,7 +93,6 @@ export default function PostCard() {
   };
 
   const handlePost = async () => {
-    // Verify user is logged in
     if (!user) {
       console.error("User is not logged in");
       alert("Please log in to create a post.");
@@ -112,7 +114,8 @@ export default function PostCard() {
     const newPost = {
       name: user.displayName || "User",
       description,
-      filePreview: fileURL || filePreview || "",
+      filePreview: fileURL || "",
+      fileType: fileType || "",
       timestamp: new Date().toLocaleString(),
       userId: user.uid,
     };
@@ -124,6 +127,7 @@ export default function PostCard() {
       setDescription("");
       setFile(null);
       setFilePreview(null);
+      setFileType("");
       setOpen(false);
     } catch (error) {
       console.error("Error adding document:", error);
@@ -232,11 +236,19 @@ export default function PostCard() {
           </Button>
           {filePreview && (
             <Box sx={{ mt: 2 }}>
-              <img
-                src={filePreview}
-                alt="Preview"
-                style={{ width: "100%", borderRadius: "8px" }}
-              />
+              {fileType.startsWith("image/") ? (
+                <img
+                  src={filePreview}
+                  alt="Preview"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+              ) : fileType.startsWith("video/") ? (
+                <video
+                  controls
+                  src={filePreview}
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+              ) : null}
             </Box>
           )}
         </DialogContent>
@@ -274,44 +286,46 @@ export default function PostCard() {
               {post.description}
             </Typography>
             {post.filePreview && (
-              <img src={post.filePreview} alt="Post" style={styles.postImage} />
+              <Box sx={{ mt: 1 }}>
+                {post.fileType.startsWith("image/") ? (
+                  <img
+                    src={post.filePreview}
+                    alt="Post Media"
+                    style={{ width: "100%", borderRadius: "8px" }}
+                  />
+                ) : post.fileType.startsWith("video/") ? (
+                  <video
+                    controls
+                    src={post.filePreview}
+                    style={{ width: "100%", borderRadius: "8px" }}
+                  />
+                ) : null}
+              </Box>
             )}
-            <Box
-              sx={{
-                display: "flex",
-                mt: 1,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  mr: 1,
-                }}
-              >
-                <ThumbUpIcon sx={styles.actionIcons} />
-                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
-                  12
+            <Box sx={styles.interactionSection}>
+              <IconButton sx={{ color: "#3b5998" }}>
+                <ThumbUpIcon />
+                <Typography variant="body2" sx={{ ml: 0.5 }}>
+                  Like
                 </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-                <CommentIcon sx={styles.actionIcons} />
-                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
-                  3
+              </IconButton>
+              <IconButton sx={{ color: "#3b5998" }}>
+                <CommentIcon />
+                <Typography variant="body2" sx={{ ml: 0.5 }}>
+                  Comment
                 </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <ShareIcon sx={styles.actionIcons} />
-                <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
-                  1
+              </IconButton>
+              <IconButton sx={{ color: "#3b5998" }}>
+                <ShareIcon />
+                <Typography variant="body2" sx={{ ml: 0.5 }}>
+                  Share
                 </Typography>
-              </Box>
+              </IconButton>
             </Box>
           </Box>
         ))}
       </Box>
+
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}

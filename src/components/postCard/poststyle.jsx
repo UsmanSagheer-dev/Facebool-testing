@@ -27,7 +27,7 @@ export  const styles = {
       top: 8,
     },
     postContainer: {
-      backgroundColor: "#f9f9f9",
+
       borderRadius: "8px",
       boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
       p: 2,
@@ -50,4 +50,10 @@ export  const styles = {
       margin: "0 8px",
       cursor:'pointer',
     },
+    interactionSection:{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '10px',
+    }
   };
