@@ -248,6 +248,9 @@ export default function PostCard() {
                   src={filePreview}
                   style={{ width: "100%", borderRadius: "8px" }}
                 />
+
+
+                
               ) : null}
             </Box>
           )}
