@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser } from "../../store/authSlice/authslice";
-import { Container, CssBaseline, Box, Typography, Grid, TextField, Button } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  Box,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { createPost } from "../../store/postSlice/PostSlice";
 
@@ -17,25 +25,14 @@ export const PostForm = ({ toggleForm }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // if (password !== confirmPassword) {
-    //   alert("Passwords do not match!");
-    //   return;
-    // }
-
     try {
-      await dispatch(
-        createPost({ post, image })
-      );
+      await dispatch(createPost({ post, image }));
 
-      // alert("Signup Successful");
       setPost("");
       setImage("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-
- 
-      // navigate("/dashboard");
     } catch (error) {
       console.log(`Error signing up: ${error.message}`);
       alert(`Error signing up: ${error.message}`);
