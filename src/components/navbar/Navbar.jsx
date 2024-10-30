@@ -1,10 +1,22 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import { Box, Dialog, DialogContent, Typography, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Divider } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  MenuItem,
+  Divider,
+  InputBase,
+} from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import MessageIcon from "@mui/icons-material/Message";
@@ -14,7 +26,9 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import GamesIcon from "@mui/icons-material/SportsEsports";
 import GridIcon from "@mui/icons-material/GridView";
 import BadgeVisibility from "../billicon/BadgeVisibility";
-import { Images } from "../../assets/images/images";
+import { styles } from './navbarStyles';
+import { Link } from "react-router-dom";
+import { logout } from '../../store/authSlice/authslice';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,21 +72,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
 
-  const handleOpenSearch = () => {
-    setSearchOpen(true);
-  };
-
-  const handleCloseSearch = () => {
-    setSearchOpen(false);
-  };
-
-  const handleOpenProfileMenu = () => {
-    setProfileMenuOpen(true);
-  };
-
-  const handleCloseProfileMenu = () => {
-    setProfileMenuOpen(false);
+  const handleOpenSearch = () => setSearchOpen(true);
+  const handleCloseSearch = () => setSearchOpen(false);
+  const handleOpenProfileMenu = () => setProfileMenuOpen(true);
+  const handleCloseProfileMenu = () => setProfileMenuOpen(false);
+  
+  const handleLogout = () => {
+    dispatch(logout());
+    alert("You have logged out successfully!");
+    handleCloseProfileMenu();
   };
 
   const searchItems = [
@@ -98,21 +109,13 @@ export default function Navbar() {
   ];
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: "#fff",
-        color: "#000",
-        borderBottom: "1px solid #ccc",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+    <AppBar position="static" sx={styles.appBar}>
+      <Toolbar sx={styles.toolbar}>
+        <Box sx={styles.logoContainer}>
           <Avatar
             alt="Facebook Logo"
             src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-            sx={{ width: 40, height: 40 }}
+            sx={styles.avatar}
           />
           <Search onClick={handleOpenSearch}>
             <SearchIconWrapper>
@@ -126,17 +129,7 @@ export default function Navbar() {
           </Search>
         </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "50px",
-            flexGrow: 1,
-            "@media (max-width: 690px)": {
-              display: "none",
-            },
-          }}
-        >
+        <Box sx={styles.iconsContainer}>
           {icons.map((iconItem) => (
             <IconButton key={iconItem.key} size="large" edge="end" color="inherit">
               {iconItem.icon}
@@ -144,29 +137,25 @@ export default function Navbar() {
           ))}
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: { sm: "auto", md: "15px" } }}>
+        <Box sx={styles.profileContainer}>
           {profileIcons.map((iconItem) => (
-            <IconButton key={iconItem.key} size="large" edge="end" color="inherit" sx={{ backgroundColor: { sm: "none", md: '#c6c6c6' } }}>
+            <IconButton key={iconItem.key} size="large" edge="end" color="inherit" sx={styles.iconButton}>
               {iconItem.icon}
             </IconButton>
           ))}
           <IconButton onClick={handleOpenProfileMenu} sx={{ p: 0, ml: 2, width: '25px' }}>
-            <Avatar alt="Profile Picture" src={Images.avatar} />
+            {user ? (
+              <Avatar alt={user.displayName} src={user.photoURL || "#"}>
+                {!user.photoURL && user.displayName && user.displayName.charAt(0)}
+              </Avatar>
+            ) : (
+              <Avatar alt="Logout" src="#" />
+            )}
           </IconButton>
         </Box>
       </Toolbar>
 
-      {/* Search Dialog */}
-      <Dialog open={searchOpen} onClose={handleCloseSearch} PaperProps={{
-        style: {
-          position: "absolute",
-          top: 0,
-          left: 0,
-          margin: "15px",
-          width: "400px",
-          borderRadius: "8px",
-        },
-      }}>
+      <Dialog open={searchOpen} onClose={handleCloseSearch} PaperProps={{ style: styles.dialogSearch }}>
         <DialogContent>
           <Typography variant="h6" gutterBottom>
             Search Facebook
@@ -194,20 +183,13 @@ export default function Navbar() {
         </DialogContent>
       </Dialog>
 
-      {/* Profile Menu Dialog */}
-      <Dialog open={profileMenuOpen} onClose={handleCloseProfileMenu} PaperProps={{
-        style: {
-          position: "absolute",
-          top: 30,
-          right: 15,
-          width: "200px",
-          borderRadius: "8px",
-        },
-      }}>
+      <Dialog open={profileMenuOpen} onClose={handleCloseProfileMenu} PaperProps={{ style: styles.dialogProfileMenu }}>
         <DialogContent>
-          <MenuItem onClick={handleCloseProfileMenu}>Account</MenuItem>
-          <Divider/>
-          <MenuItem onClick={handleCloseProfileMenu}>Sign Out</MenuItem>
+          <MenuItem component={Link} to="/" onClick={handleCloseProfileMenu}>
+            Account
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
         </DialogContent>
       </Dialog>
     </AppBar>

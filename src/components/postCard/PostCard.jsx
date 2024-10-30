@@ -42,7 +42,7 @@ import { styles } from "./poststyle";
 export default function PostCard() {
   const dispatch = useDispatch();
   const posts = useSelector(selectPosts);
-  const user = useSelector(selectUser); 
+  const user = useSelector(selectUser);
   const [open, setOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -96,7 +96,7 @@ export default function PostCard() {
       alert("Please log in to create a post.");
       return;
     }
- 
+
     if (!description) {
       console.error("Description is required.");
       return;
@@ -108,14 +108,15 @@ export default function PostCard() {
       await uploadBytes(storageRef, file);
       fileURL = await getDownloadURL(storageRef);
     }
+
     const newPost = {
-      name: user.displayName || "User", 
+      name: user.displayName || "User",
       description,
       filePreview: fileURL || filePreview || "",
       timestamp: new Date().toLocaleString(),
       userId: user.uid,
     };
-  
+
     try {
       const postCollection = collection(db, "posts");
       await addDoc(postCollection, newPost);
@@ -128,7 +129,7 @@ export default function PostCard() {
       console.error("Error adding document:", error);
     }
   };
-  
+
   const handleMenuClick = (event, post) => {
     setAnchorEl(event.currentTarget);
     setPostToDelete(post);
@@ -304,17 +305,19 @@ export default function PostCard() {
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <ShareIcon sx={styles.actionIcons} />
                 <Typography variant="body2" color="textSecondary" sx={{ ml: 0.5 }}>
-                  Share
+                  1
                 </Typography>
               </Box>
             </Box>
           </Box>
         ))}
       </Box>
-
-      {/* Menu for deleting posts */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-        <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
       </Menu>
     </Box>
   );
