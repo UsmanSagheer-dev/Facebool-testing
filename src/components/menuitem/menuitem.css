@@ -1,0 +1,25 @@
+/* Import the Poppins font */
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../assets/fonts/Poppins-Regular.ttf');
+}
+
+.menuitem {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 10px 0;
+    border-radius: 5px;
+    padding: 5px 2px;
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: transparent;
+    transition: color 0.5s, background-color 0.5s;
+    cursor: pointer;
+}
+
+.menuitem:hover {
+    color: white;
+    background-color: #bcbcbc;
+}
