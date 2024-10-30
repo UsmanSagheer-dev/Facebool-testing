@@ -42,7 +42,7 @@ import { styles } from "./poststyle";
 export default function PostCard() {
   const dispatch = useDispatch();
   const posts = useSelector(selectPosts);
-  const user = useSelector(selectUser); // Get the current user from the Redux store
+  const user = useSelector(selectUser); 
   const [open, setOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -90,12 +90,13 @@ export default function PostCard() {
   };
 
   const handlePost = async () => {
+    // Verify user is logged in
     if (!user) {
       console.error("User is not logged in");
       alert("Please log in to create a post.");
       return;
     }
-
+ 
     if (!description) {
       console.error("Description is required.");
       return;
@@ -107,15 +108,14 @@ export default function PostCard() {
       await uploadBytes(storageRef, file);
       fileURL = await getDownloadURL(storageRef);
     }
-
     const newPost = {
-      name: user.displayName || "An", 
+      name: user.displayName || "User", 
       description,
       filePreview: fileURL || filePreview || "",
       timestamp: new Date().toLocaleString(),
-      userId: user.uid, // Store the ID of the user who created the post
+      userId: user.uid,
     };
-
+  
     try {
       const postCollection = collection(db, "posts");
       await addDoc(postCollection, newPost);
@@ -128,7 +128,7 @@ export default function PostCard() {
       console.error("Error adding document:", error);
     }
   };
-
+  
   const handleMenuClick = (event, post) => {
     setAnchorEl(event.currentTarget);
     setPostToDelete(post);

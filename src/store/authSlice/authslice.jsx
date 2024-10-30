@@ -3,19 +3,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { Auth, db } from "../../config/firebase"; 
 import { doc, setDoc } from "firebase/firestore";
-
+import { updateProfile } from "firebase/auth";
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const userCredential = await signInWithEmailAndPassword(Auth, email, password);
       const user = userCredential.user;
-      return user;
+      return {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 
 export const signupUser = createAsyncThunk(
   "auth/signupUser",
@@ -23,11 +28,16 @@ export const signupUser = createAsyncThunk(
     try {
       const userCredential = await createUserWithEmailAndPassword(Auth, email, password);
       const user = userCredential.user;
+      
+    
+      await updateProfile(user, { displayName: `${firstName} ${lastName}` });
+      
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         firstName,
         lastName,
         email: user.email,
+        displayName: `${firstName} ${lastName}`,
       });
 
       return {
@@ -35,6 +45,7 @@ export const signupUser = createAsyncThunk(
         firstName,
         lastName,
         email: user.email,
+        displayName: user.displayName,
       };
     } catch (error) {
       console.error("Error signing up or saving data to Firestore:", error);
@@ -42,6 +53,7 @@ export const signupUser = createAsyncThunk(
     }
   }
 );
+
 
 const initialState = {
   user: null,
