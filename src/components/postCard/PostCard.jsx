@@ -27,6 +27,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Divider,
 } from "@mui/material";
 import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -135,8 +136,12 @@ export default function PostCard() {
   };
 
   const handleMenuClick = (event, post) => {
-    setAnchorEl(event.currentTarget);
-    setPostToDelete(post);
+    if (post.userId === user?.uid) {
+      setAnchorEl(event.currentTarget);
+      setPostToDelete(post);
+    } else {
+      alert("You can only delete your own posts.");
+    }
   };
 
   const handleCloseMenu = () => {
@@ -236,13 +241,13 @@ export default function PostCard() {
           </Button>
           {filePreview && (
             <Box sx={{ mt: 2 }}>
-              {fileType.startsWith("image/") ? (
+              {fileType && fileType.startsWith("image/") ? (
                 <img
                   src={filePreview}
                   alt="Preview"
                   style={{ width: "100%", borderRadius: "8px" }}
                 />
-              ) : fileType.startsWith("video/") ? (
+              ) : fileType && fileType.startsWith("video/") ? (
                 <video
                   controls
                   src={filePreview}
@@ -261,7 +266,7 @@ export default function PostCard() {
           </Button>
         </DialogActions>
       </Dialog>
-
+   
       <Box sx={styles.postContainer}>
         {posts.map((post) => (
           <Box key={post.id} sx={styles.postBox}>
@@ -278,22 +283,26 @@ export default function PostCard() {
                   {post.timestamp}
                 </Typography>
               </Box>
-              <IconButton onClick={(event) => handleMenuClick(event, post)}>
-                <MoreVertIcon />
-              </IconButton>
+              {post.userId === user?.uid && (
+                <IconButton onClick={(event) => handleMenuClick(event, post)}>
+                  <MoreVertIcon />
+                </IconButton>
+              )}
             </Box>
+            <Divider/>
             <Typography variant="body1" sx={{ mt: 1 }}>
               {post.description}
             </Typography>
+            <Divider/>
             {post.filePreview && (
               <Box sx={{ mt: 1 }}>
-                {post.fileType.startsWith("image/") ? (
+                {post.fileType && post.fileType.startsWith("image/") ? (
                   <img
                     src={post.filePreview}
-                    alt="Post Media"
+                    alt="Post content"
                     style={{ width: "100%", borderRadius: "8px" }}
                   />
-                ) : post.fileType.startsWith("video/") ? (
+                ) : post.fileType && post.fileType.startsWith("video/") ? (
                   <video
                     controls
                     src={post.filePreview}
@@ -302,26 +311,19 @@ export default function PostCard() {
                 ) : null}
               </Box>
             )}
-            <Box sx={styles.interactionSection}>
-              <IconButton sx={{ color: "#3b5998" }}>
-                <ThumbUpIcon />
-                <Typography variant="body2" sx={{ ml: 0.5 }}>
-                  Like
-                </Typography>
-              </IconButton>
-              <IconButton sx={{ color: "#3b5998" }}>
-                <CommentIcon />
-                <Typography variant="body2" sx={{ ml: 0.5 }}>
-                  Comment
-                </Typography>
-              </IconButton>
-              <IconButton sx={{ color: "#3b5998" }}>
-                <ShareIcon />
-                <Typography variant="body2" sx={{ ml: 0.5 }}>
-                  Share
-                </Typography>
-              </IconButton>
+            <Divider/>
+            <Box sx={{ display: "flex",justifyContent:'space-between', mt: 2 }}>
+              <Button startIcon={<ThumbUpIcon />} sx={styles.postButton}>
+                Like
+              </Button>
+              <Button startIcon={<CommentIcon />} sx={styles.postButton}>
+                Comment
+              </Button>
+              <Button startIcon={<ShareIcon />} sx={styles.postButton}>
+                Share
+              </Button>
             </Box>
+            <Divider/>
           </Box>
         ))}
       </Box>
