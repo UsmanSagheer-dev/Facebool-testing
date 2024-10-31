@@ -3,7 +3,8 @@ import Navbar from "../../components/navbar/Navbar";
 import PostCard from "../../components/postCard/PostCard";
 import StoriesSlider from "../../components/storiesSlider/StoriesSlider";
 import MenuList from "../../components/menuitem/Menuitem";
-import FacebookCard from "../../components/facebookcard/Facebookcard";
+import MenuList2 from "../../components/menuitem2/Menuitem";
+import MenuItem2 from "../../components/menuitem2/Menuitem";
 
 export default function DashboardLayout() {
   const styles = {
@@ -25,23 +26,28 @@ export default function DashboardLayout() {
           height: "calc(100vh - 64px)",
         }}
       >
-        {/* Left Sidebar */}
         <Box
           sx={{
             display: { md: "flex" },
             flexDirection: "column",
-            width: "20%",
+            width: "24%",
             backgroundColor: "#d6dadb",
+            overflowY: "scroll",
             padding: "20px",
-            "@media (max-width: 900px)": {
-              display: "none",
+            "&::-webkit-scrollbar": { width: "8px", opacity: 0 },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#888",
+              borderRadius: "4px",
             },
+            "&:hover::-webkit-scrollbar": { opacity: 1 },
+            scrollbarWidth: "none",
+            "&:hover": { scrollbarWidth: "thin" },
+            "@media (max-width: 900px)": { display: "none" },
           }}
         >
           <MenuList />
         </Box>
 
-        {/* Main Content */}
         <Box
           sx={{
             width: "60%",
@@ -53,24 +59,18 @@ export default function DashboardLayout() {
             justifyContent: "start",
             alignItems: "center",
             scrollbarWidth: "thin",
-            "&::-webkit-scrollbar": {
-              width: "0px",
-            },
+            "&::-webkit-scrollbar": { width: "0px" },
             "&:hover": {
-              "&::-webkit-scrollbar": {
-                width: "8px",
-              },
+              "&::-webkit-scrollbar": { width: "8px" },
               "&::-webkit-scrollbar-thumb": {
                 backgroundColor: "#888",
                 borderRadius: "10px",
               },
             },
-            "@media (max-width: 800px)": {
-              width: "100%",
-            },
+            "@media (max-width: 800px)": { width: "100%" },
           }}
         >
-           <Box
+          <Box
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -90,29 +90,28 @@ export default function DashboardLayout() {
           >
             <PostCard />
           </Box>
-
-         
-          <Box>
-            {/* <FacebookCard /> */}
-          </Box>
         </Box>
 
-        {/* Right Sidebar */}
         <Box
           sx={{
             display: { md: "flex" },
             flexDirection: "column",
-            width: "20%",
+            width: "24%",
             backgroundColor: "#d6dadb",
+            overflowY: "scroll",
             padding: "20px",
-            "@media (max-width: 800px)": {
-              display: "none",
+            "&::-webkit-scrollbar": { width: "8px", opacity: 0 },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#888",
+              borderRadius: "4px",
             },
+            "&:hover::-webkit-scrollbar": { opacity: 1 },
+            scrollbarWidth: "none",
+            "&:hover": { scrollbarWidth: "thin" },
+            "@media (max-width: 800px)": { display: "none" },
           }}
         >
-          <p>🎉 Events</p>
-          <p>📧 Messages</p>
-          <p>🎂 Birthdays</p>
+          <MenuItem2/>
         </Box>
       </Box>
     </Box>

@@ -33,12 +33,10 @@ import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import MovieIcon from "@mui/icons-material/Movie";
 import CloseIcon from "@mui/icons-material/Close";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import CommentIcon from "@mui/icons-material/Comment";
-import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { selectUser } from "../../store/authSlice/authslice";
 import { styles } from "./poststyle";
+import ButtonGroup from "../buttonGroup/ButtonGroup";
 
 export default function PostCard() {
   const dispatch = useDispatch();
@@ -95,13 +93,11 @@ export default function PostCard() {
 
   const handlePost = async () => {
     if (!user) {
-      console.error("User is not logged in");
       alert("Please log in to create a post.");
       return;
     }
 
     if (!description) {
-      console.error("Description is required.");
       return;
     }
 
@@ -125,11 +121,7 @@ export default function PostCard() {
       const postCollection = collection(db, "posts");
       await addDoc(postCollection, newPost);
       dispatch(addPost(newPost));
-      setDescription("");
-      setFile(null);
-      setFilePreview(null);
-      setFileType("");
-      setOpen(false);
+      handleClose();
     } catch (error) {
       console.error("Error adding document:", error);
     }
@@ -151,11 +143,9 @@ export default function PostCard() {
 
   const handleDeletePost = async () => {
     if (postToDelete) {
-      console.log("Deleting post with ID:", postToDelete.id);
       try {
         await deleteDoc(doc(db, "posts", postToDelete.id));
         dispatch(setPosts(posts.filter((post) => post.id !== postToDelete.id)));
-        console.log("Post deleted successfully");
       } catch (error) {
         console.error("Error deleting document:", error);
       }
@@ -266,7 +256,7 @@ export default function PostCard() {
           </Button>
         </DialogActions>
       </Dialog>
-   
+
       <Box sx={styles.postContainer}>
         {posts.map((post) => (
           <Box key={post.id} sx={styles.postBox}>
@@ -289,11 +279,11 @@ export default function PostCard() {
                 </IconButton>
               )}
             </Box>
-            <Divider/>
+            <Divider />
             <Typography variant="body1" sx={{ mt: 1 }}>
               {post.description}
             </Typography>
-            <Divider/>
+            <Divider />
             {post.filePreview && (
               <Box sx={{ mt: 1 }}>
                 {post.fileType && post.fileType.startsWith("image/") ? (
@@ -311,19 +301,11 @@ export default function PostCard() {
                 ) : null}
               </Box>
             )}
-            <Divider/>
-            <Box sx={{ display: "flex",justifyContent:'space-between', mt: 2 }}>
-              <Button startIcon={<ThumbUpIcon />} sx={styles.postButton}>
-                Like
-              </Button>
-              <Button startIcon={<CommentIcon />} sx={styles.postButton}>
-                Comment
-              </Button>
-              <Button startIcon={<ShareIcon />} sx={styles.postButton}>
-                Share
-              </Button>
+            <Divider />
+            <Box>
+              <ButtonGroup />
             </Box>
-            <Divider/>
+            <Divider />
           </Box>
         ))}
       </Box>

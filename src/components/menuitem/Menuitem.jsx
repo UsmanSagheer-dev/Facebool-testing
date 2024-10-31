@@ -1,22 +1,31 @@
 import React from "react";
+import "./menuitem.css";
 
-// Data Arrays
-const icons = ["👤", "🏠", "📦", "📺", "🧑‍🤝‍🧑", "🗓️"];
-const labels = ["Profile", "Home", "Marketplace", "Watch", "Friends", "Events"];
+const icons = [
+  "👤", "🏠", "📦", "📺", "🧑‍🤝‍🧑",
+  "🗓️", "📷", "🎥", "📝", "🔔",
+  "📧", "⚙️", "🧠", "📢", "👨‍💼",
+  "🌍", "🎮", "🎞️", "💾",
+];
 
-// Menu Item Component
+const labels = [
+  "Profile", "Home", "Marketplace", "Watch", "Friends",
+  "Events", "Photos", "Videos", "Pages", "Notifications",
+  "Messenger", "Settings", "Memory", "Ads", "Add Manager",
+  "Climate Science Center", "Gaming Video", "Reels", "Save",
+];
+
 const MenuItem = ({ icon, label }) => {
   return (
-    <p style={{fontSize:"25px",fontWeight:'700'}}>
+    <p className="menuitem">
       {icon} {label}
     </p>
   );
 };
 
-// Main Component
 const MenuList = () => {
   return (
-    <div style={{display:"flex",flexDirection:'column',}}>
+    <div style={{ display: "flex", flexDirection: "column", padding: "20px" }}>
       {icons.map((icon, index) => (
         <MenuItem key={index} icon={icon} label={labels[index]} />
       ))}
