@@ -3,8 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import PostCard from "../../components/postCard/PostCard";
 import StoriesSlider from "../../components/storiesSlider/StoriesSlider";
 import MenuList from "../../components/menuitem/Menuitem";
-import MenuList2 from "../../components/menuitem2/Menuitem";
-import MenuItem2 from "../../components/menuitem2/Menuitem";
+import MenuItem2 from "../../components/menuitem2/Menuitem2";
 
 export default function DashboardLayout() {
   const styles = {
@@ -58,7 +57,7 @@ export default function DashboardLayout() {
             flexDirection: "column",
             justifyContent: "start",
             alignItems: "center",
-            scrollbarWidth: "thin",
+            scrollbarWidth: "none", 
             "&::-webkit-scrollbar": { width: "0px" },
             "&:hover": {
               "&::-webkit-scrollbar": { width: "8px" },
@@ -100,18 +99,14 @@ export default function DashboardLayout() {
             backgroundColor: "#d6dadb",
             overflowY: "scroll",
             padding: "20px",
-            "&::-webkit-scrollbar": { width: "8px", opacity: 0 },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#888",
-              borderRadius: "4px",
-            },
-            "&:hover::-webkit-scrollbar": { opacity: 1 },
+
+            "&::-webkit-scrollbar": { display: "none" },
+
             scrollbarWidth: "none",
-            "&:hover": { scrollbarWidth: "thin" },
             "@media (max-width: 800px)": { display: "none" },
           }}
         >
-          <MenuItem2/>
+          <MenuItem2 />
         </Box>
       </Box>
     </Box>

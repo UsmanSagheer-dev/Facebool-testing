@@ -15,7 +15,7 @@ import { createPost } from "../../store/postSlice/PostSlice";
 
 export const PostForm = ({ toggleForm }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Add useNavigate
+  const navigate = useNavigate();
 
   const [post, setPost] = useState("");
   const [image, setImage] = useState("");
