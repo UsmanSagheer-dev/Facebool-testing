@@ -26,9 +26,9 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import GamesIcon from "@mui/icons-material/SportsEsports";
 import GridIcon from "@mui/icons-material/GridView";
 import BadgeVisibility from "../billicon/BadgeVisibility";
-import { styles } from './navbarStyles';
+import { styles } from "./navbarStyles";
 import { Link } from "react-router-dom";
-import { logout } from '../../store/authSlice/authslice';
+import { logout } from "../../store/authSlice/authslice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -79,7 +79,7 @@ export default function Navbar() {
   const handleCloseSearch = () => setSearchOpen(false);
   const handleOpenProfileMenu = () => setProfileMenuOpen(true);
   const handleCloseProfileMenu = () => setProfileMenuOpen(false);
-  
+
   const handleLogout = () => {
     dispatch(logout());
     alert("You have logged out successfully!");
@@ -131,7 +131,12 @@ export default function Navbar() {
 
         <Box sx={styles.iconsContainer}>
           {icons.map((iconItem) => (
-            <IconButton key={iconItem.key} size="large" edge="end" color="inherit">
+            <IconButton
+              key={iconItem.key}
+              size="large"
+              edge="end"
+              color="inherit"
+            >
               {iconItem.icon}
             </IconButton>
           ))}
@@ -139,14 +144,25 @@ export default function Navbar() {
 
         <Box sx={styles.profileContainer}>
           {profileIcons.map((iconItem) => (
-            <IconButton key={iconItem.key} size="large" edge="end" color="inherit" sx={styles.iconButton}>
+            <IconButton
+              key={iconItem.key}
+              size="large"
+              edge="end"
+              color="inherit"
+              sx={styles.iconButton}
+            >
               {iconItem.icon}
             </IconButton>
           ))}
-          <IconButton onClick={handleOpenProfileMenu} sx={{ p: 0, ml: 2, width: '25px' }}>
+          <IconButton
+            onClick={handleOpenProfileMenu}
+            sx={{ p: 0, ml: 2, width: "25px" }}
+          >
             {user ? (
               <Avatar alt={user.displayName} src={user.photoURL || "#"}>
-                {!user.photoURL && user.displayName && user.displayName.charAt(0)}
+                {!user.photoURL &&
+                  user.displayName &&
+                  user.displayName.charAt(0)}
               </Avatar>
             ) : (
               <Avatar alt="Logout" src="#" />
@@ -155,7 +171,11 @@ export default function Navbar() {
         </Box>
       </Toolbar>
 
-      <Dialog open={searchOpen} onClose={handleCloseSearch} PaperProps={{ style: styles.dialogSearch }}>
+      <Dialog
+        open={searchOpen}
+        onClose={handleCloseSearch}
+        PaperProps={{ style: styles.dialogSearch }}
+      >
         <DialogContent>
           <Typography variant="h6" gutterBottom>
             Search Facebook
@@ -176,14 +196,21 @@ export default function Navbar() {
                 <ListItemAvatar>
                   <Avatar>{item.name.charAt(0)}</Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={item.name} secondary={item.newMessages} />
+                <ListItemText
+                  primary={item.name}
+                  secondary={item.newMessages}
+                />
               </ListItem>
             ))}
           </List>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={profileMenuOpen} onClose={handleCloseProfileMenu} PaperProps={{ style: styles.dialogProfileMenu }}>
+      <Dialog
+        open={profileMenuOpen}
+        onClose={handleCloseProfileMenu}
+        PaperProps={{ style: styles.dialogProfileMenu }}
+      >
         <DialogContent>
           <MenuItem component={Link} to="/" onClick={handleCloseProfileMenu}>
             Account

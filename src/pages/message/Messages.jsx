@@ -6,8 +6,7 @@ export default function Messages() {
     <>
     <Box>
         <h2>Messages</h2>
-        {/* Messages will be displayed here */}
-        {/* Example: <Message message="Hello, world!" /> */}
+  
   
     </Box>
     </>
