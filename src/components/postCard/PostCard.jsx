@@ -4,7 +4,7 @@ import {
   addPost,
   setPosts,
   selectPosts,
-} from "../../store/postSlice/PostSlice";
+} from "../../store/slices/PostSlice";
 import { db, storage } from "../../config/firebase";
 import {
   collection,

@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { createPost } from "../../store/postSlice/PostSlice";
+import { createPost } from "../../store/slices/PostSlice";
 
 export const PostForm = ({ toggleForm }) => {
   const dispatch = useDispatch();

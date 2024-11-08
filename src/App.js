@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "./store/Store";
-import { initializeUser } from './store/authSlice/authslice'; 
+import { initializeUser } from './store/slices/authslice'; 
 import Navigation from "./components/navigation/Navigation";
 
 function App() {
