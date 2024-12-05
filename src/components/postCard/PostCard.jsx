@@ -106,6 +106,7 @@ export default function PostCard() {
       const storageRef = ref(storage, `posts/${file.name}`);
       await uploadBytes(storageRef, file);
       fileURL = await getDownloadURL(storageRef);
+      console.log("🚀 ~ handlePost ~ storageRef:", storageRef)
     }
 
     const newPost = {
@@ -119,9 +120,12 @@ export default function PostCard() {
 
     try {
       const postCollection = collection(db, "posts");
-      await addDoc(postCollection, newPost);
-      dispatch(addPost(newPost));
-      handleClose();
+      const docRef = await addDoc(postCollection, newPost); 
+      newPost.id = docRef.id;
+
+      // Immediately update the local state with the new post
+      dispatch(addPost(newPost)); // This will update the Redux state
+      handleClose(); // Close the dialog
     } catch (error) {
       console.error("Error adding document:", error);
     }
@@ -305,18 +309,16 @@ export default function PostCard() {
             <Box>
               <ButtonGroup />
             </Box>
-            <Divider />
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMenu}
+            >
+              <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
+            </Menu>
           </Box>
         ))}
       </Box>
-
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        <MenuItem onClick={handleDeletePost}>Delete Post</MenuItem>
-      </Menu>
     </Box>
   );
 }
