@@ -78,9 +78,21 @@ export default function PostCard() {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    setFile(selectedFile);
+    
     if (selectedFile) {
+      const maxFileSize = 25 * 1024; // 25KB in bytes
+  
+      if (selectedFile.size > maxFileSize) {
+        alert("File size should not exceed 25KB. Please upload a smaller file.");
+        setFile(null);
+        setFilePreview(null);
+        setFileType("");
+        return;
+      }
+  
+      setFile(selectedFile);
       setFileType(selectedFile.type || "");
+      
       const reader = new FileReader();
       reader.onloadend = () => {
         setFilePreview(reader.result);
@@ -90,6 +102,7 @@ export default function PostCard() {
       setFilePreview(null);
     }
   };
+  
 
   const handlePost = async () => {
     if (!user) {

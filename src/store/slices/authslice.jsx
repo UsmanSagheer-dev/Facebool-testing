@@ -11,9 +11,9 @@ import { Auth, db, storage } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-// Helper function to get error message
+
 const getErrorMessage = (error) => {
-  console.error("Firebase Error:", error); // For debugging
+  console.error("Firebase Error:", error);
   switch (error.code) {
     case "auth/user-not-found":
       return "User not found";
