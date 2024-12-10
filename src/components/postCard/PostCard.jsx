@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addPost,
-  setPosts,
-  selectPosts,
-} from "../../store/slices/PostSlice";
+import { addPost, setPosts, selectPosts } from "../../store/slices/PostSlice";
 import { db, storage } from "../../config/firebase";
 import {
   collection,
@@ -78,31 +74,35 @@ export default function PostCard() {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    
+
     if (selectedFile) {
-      const maxFileSize = 25 * 1024; // 25KB in bytes
-  
+      const maxImageSize = 25 * 1024; // 25KB for images
+      const maxVideoSize = 4 * 1024 * 1024; // 2MB for videos
+      const isVideo = selectedFile.type.startsWith("video/");
+      const maxFileSize = isVideo ? maxVideoSize : maxImageSize;
+
       if (selectedFile.size > maxFileSize) {
-        alert("File size should not exceed 25KB. Please upload a smaller file.");
+        alert(
+          `File size should not exceed ${isVideo ? '100KB' : '25KB'}. Please upload a smaller file.`
+        );
         setFile(null);
         setFilePreview(null);
         setFileType("");
         return;
       }
-  
+
       setFile(selectedFile);
       setFileType(selectedFile.type || "");
-      
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFilePreview(reader.result);
+        setFilePreview(reader?.result);
       };
       reader.readAsDataURL(selectedFile);
     } else {
       setFilePreview(null);
     }
   };
-  
 
   const handlePost = async () => {
     if (!user) {
@@ -119,34 +119,33 @@ export default function PostCard() {
       const storageRef = ref(storage, `posts/${file.name}`);
       await uploadBytes(storageRef, file);
       fileURL = await getDownloadURL(storageRef);
-      console.log("🚀 ~ handlePost ~ storageRef:", storageRef)
+      console.log("🚀 ~ handlePost ~ storageRef:", storageRef);
     }
 
     const newPost = {
-      name: user.displayName || "User",
+      name: user?.displayName || "User",
       description,
       filePreview: fileURL || "",
       fileType: fileType || "",
       timestamp: new Date().toLocaleString(),
-      userId: user.uid,
+      userId: user?.uid,
     };
 
     try {
       const postCollection = collection(db, "posts");
-      const docRef = await addDoc(postCollection, newPost); 
+      const docRef = await addDoc(postCollection, newPost);
       newPost.id = docRef.id;
 
-      // Immediately update the local state with the new post
-      dispatch(addPost(newPost)); // This will update the Redux state
-      handleClose(); // Close the dialog
+      dispatch(addPost(newPost));
+      handleClose(); 
     } catch (error) {
       console.error("Error adding document:", error);
     }
   };
 
   const handleMenuClick = (event, post) => {
-    if (post.userId === user?.uid) {
-      setAnchorEl(event.currentTarget);
+    if (post?.userId === user?.uid) {
+      setAnchorEl(event?.currentTarget);
       setPostToDelete(post);
     } else {
       alert("You can only delete your own posts.");
@@ -162,7 +161,7 @@ export default function PostCard() {
     if (postToDelete) {
       try {
         await deleteDoc(doc(db, "posts", postToDelete.id));
-        dispatch(setPosts(posts.filter((post) => post.id !== postToDelete.id)));
+        dispatch(setPosts(posts.filter((post) => post?.id !== postToDelete?.id)));
       } catch (error) {
         console.error("Error deleting document:", error);
       }
@@ -173,12 +172,14 @@ export default function PostCard() {
   return (
     <Box sx={styles.container}>
       <Box sx={styles.inputSection}>
-        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-          <Avatar
-            alt="Profile Picture"
-            src={user?.photoURL || "https://via.placeholder.com/150"}
-            sx={styles.avatar}
-          />
+        <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: "10px" }}>
+          {user ? (
+            <Avatar alt={user.displayName} src={user.photoURL || "#"}>
+              {!user.photoURL && user.displayName && user.displayName.charAt(0)}
+            </Avatar>
+          ) : (
+            <Avatar alt="Logout" src="#" />
+          )}
           <TextField
             fullWidth
             placeholder="What's on your mind, "
@@ -221,6 +222,7 @@ export default function PostCard() {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
+
         <DialogContent>
           <TextField
             fullWidth
@@ -277,25 +279,35 @@ export default function PostCard() {
       <Box sx={styles.postContainer}>
         {posts.map((post) => (
           <Box key={post.id} sx={styles.postBox}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: "10px" }}>
               <Box>
-                <Typography variant="h6">{post.name}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {post.timestamp}
-                </Typography>
+                <Avatar alt={post.name} src="#">
+                  {post.name.charAt(0)}
+                </Avatar>
               </Box>
-              {post.userId === user?.uid && (
-                <IconButton onClick={(event) => handleMenuClick(event, post)}>
-                  <MoreVertIcon />
-                </IconButton>
-              )}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Box>
+                  <Typography variant="h6">{post.name}</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {post.timestamp}
+                  </Typography>
+                </Box>
+                {post.userId === user?.uid && (
+                  <IconButton onClick={(event) => handleMenuClick(event, post)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                )}
+              </Box>
             </Box>
+
             <Divider />
             <Typography variant="body1" sx={{ mt: 1 }}>
               {post.description}
