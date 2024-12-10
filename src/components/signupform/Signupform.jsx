@@ -15,6 +15,7 @@ export const SignupForm = () => {
     email: Yup.string().email("Invalid email format").required("Email is required"),
     password: Yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
     confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match").required("Confirm Password is required"),
+    profilePicture: Yup.mixed()
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -37,8 +38,8 @@ export const SignupForm = () => {
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 8, p: 2, border: "1px solid #ddd", borderRadius: "8px" }}>
         <Typography variant="h5">Sign Up</Typography>
         <Typography variant="body2" sx={{ mb: 3 }}>It's quick and easy.</Typography>
-        <Formik initialValues={{ firstName: "", lastName: "", email: "", password: "", confirmPassword: "" }} validationSchema={validationSchema} onSubmit={handleSubmit}>
-          {({ isSubmitting }) => (
+        <Formik initialValues={{ firstName: "", lastName: "", email: "", password: "", confirmPassword: "", profilePicture: null }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+          {({ isSubmitting, setFieldValue }) => (
             <Form>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -51,6 +52,25 @@ export const SignupForm = () => {
               <Field as={TextField} variant="outlined" margin="normal" fullWidth name="email" label="Email" helperText={<ErrorMessage name="email" />} error={Boolean(<ErrorMessage name="email" />)} />
               <Field as={TextField} variant="outlined" margin="normal" fullWidth name="password" label="Password" type="password" helperText={<ErrorMessage name="password" />} error={Boolean(<ErrorMessage name="password" />)} />
               <Field as={TextField} variant="outlined" margin="normal" fullWidth name="confirmPassword" label="Confirm Password" type="password" helperText={<ErrorMessage name="confirmPassword" />} error={Boolean(<ErrorMessage name="confirmPassword" />)} />
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="profile-picture-upload"
+                type="file"
+                onChange={(event) => {
+                  setFieldValue("profilePicture", event.currentTarget.files[0]);
+                }}
+              />
+              <label htmlFor="profile-picture-upload">
+                <Button
+                  variant="outlined"
+                  component="span"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                >
+                  Upload Profile Picture
+                </Button>
+              </label>
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, mb: 2 }} disabled={isSubmitting}>Sign Up</Button>
             </Form>
           )}

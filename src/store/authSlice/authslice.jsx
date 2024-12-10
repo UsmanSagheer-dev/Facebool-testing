@@ -31,14 +31,14 @@ const loginUser = createAsyncThunk(
 // AsyncThunk to sign up a user
 const signupUser = createAsyncThunk(
   "auth/signupUser",
-  async ({ firstName, lastName, email, password }, { rejectWithValue }) => {
+  async ({ firstName, lastName, email, password, photoURL }, { rejectWithValue }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(Auth, email, password);
       const user = userCredential.user;
 
-      // Update the user's profile with display name
+      // Update the user's profile with display name and photo URL
       try {
-        await updateProfile(user, { displayName: `${firstName} ${lastName}` });
+        await updateProfile(user, { displayName: `${firstName} ${lastName}`, photoURL });
         console.log("User profile updated successfully");
       } catch (error) {
         throw new Error("Failed to update user profile: " + error.message);
@@ -53,6 +53,7 @@ const signupUser = createAsyncThunk(
           lastName,
           email: user.email,
           displayName: `${firstName} ${lastName}`,
+          photoURL, // Save photoURL to Firestore
         });
         console.log("User data saved to Firestore");
       } catch (error) {
@@ -65,6 +66,7 @@ const signupUser = createAsyncThunk(
         lastName,
         email: user.email,
         displayName: `${firstName} ${lastName}`,
+        photoURL, // Return photoURL
       };
     } catch (error) {
       console.error("Signup Error:", error.message);

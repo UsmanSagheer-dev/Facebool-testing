@@ -10,6 +10,8 @@ export  const styles = {
       boxShadow: "1px 1px 2px 2px rgba(0, 0, 0, 0.1)",
       padding: "15px",
       mb: 4,
+      gap: "10px",
+      
     },
     avatar: {
       width: 40,
