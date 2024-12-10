@@ -134,7 +134,7 @@ export default function PostCard() {
     try {
       const postCollection = collection(db, "posts");
       const docRef = await addDoc(postCollection, newPost);
-      newPost?.id = docRef?.id;
+      newPost.id = docRef.id;
 
       dispatch(addPost(newPost));
       handleClose(); 
